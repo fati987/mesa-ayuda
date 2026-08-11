@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(java -version)",
+      "PowerShell(docker --version)",
+      "PowerShell(docker compose version)",
+      "PowerShell(Write-Output \"JAVA_HOME=$env:JAVA_HOME\"; Get-ChildItem -Path \"C:\\\\Program Files\\\\Java\",\"C:\\\\Program Files\\\\Eclipse Adoptium\",\"C:\\\\Program Files\\\\Docker\" -ErrorAction SilentlyContinue | Select-Object FullName; where.exe java 2>$null; where.exe docker 2>$null; where.exe mvn 2>$null)",
+      "PowerShell(mvn -version)",
+      "PowerShell(Get-Command psql -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Service -Name \"postgresql-x64-13\",\"postgresql-x64-17\")",
+      "PowerShell(Get-CimInstance Win32_Service -Filter \"Name='postgresql-x64-17'\")",
+      "PowerShell(Get-CimInstance Win32_Service -Filter \"Name='postgresql-x64-13'\")",
+      "PowerShell(Test-Path \"C:\\\\Program Files\\\\PostgreSQL\\\\17\\\\data\"; try { Get-ChildItem \"C:\\\\Program Files\\\\PostgreSQL\\\\17\\\\data\" -ErrorAction Stop | Select-Object Name } catch { Write-Output \"ERROR: $\\($_.Exception.Message\\)\" })",
+      "PowerShell(Test-NetConnection -ComputerName localhost -Port 5432 -WarningAction SilentlyContinue | Select-Object TcpTestSucceeded; Test-NetConnection -ComputerName localhost -Port 5433 -WarningAction SilentlyContinue | Select-Object TcpTestSucceeded; Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue | Where-Object {$_.LocalPort -in 5432,5433,5434} | Select-Object LocalPort,OwningProcess)",
+      "PowerShell(Get-NetTCPConnection -State Listen | Where-Object {$_.LocalPort -eq 5432 -or $_.LocalPort -eq 5433} | ForEach-Object { $proc = Get-Process -Id $_.OwningProcess -ErrorAction SilentlyContinue; [PSCustomObject]@{Port=$_.LocalPort; PID=$_.OwningProcess; Path=$proc.Path} })",
+      "PowerShell(Get-CimInstance Win32_Process -Filter \"ProcessId=9548\")",
+      "PowerShell(Get-CimInstance Win32_Process -Filter \"ProcessId=45012\")",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"https://repo.maven.apache.org/maven2/org/apache/maven/wrapper/maven-wrapper/3.3.2/maven-wrapper-3.3.2.jar\" -Method Head -TimeoutSec 10 -UseBasicParsing; Write-Output \"OK $\\($r.StatusCode\\)\" } catch { Write-Output \"FAIL: $\\($_.Exception.Message\\)\" })",
+      "Bash(mkdir -p \"c:/dev/mesa-ayuda/.mvn/wrapper\")",
+      "Bash(mkdir -p \"c:/dev/mesa-ayuda/src/main/java/com/mesaayuda/config\" \\\\ *)",
+      "Bash(break)",
+      "Bash(curl -s \"http://localhost:8080/api/categorias\")",
+      "Bash(curl -s \"http://localhost:8080/api/tickets\")",
+      "Bash(curl -s \"http://localhost:8080/api/tickets?estado=NUEVO\")",
+      "Bash(curl -s -w \"\\\\nHTTP_STATUS:%{http_code}\\\\n\" \"http://localhost:8080/api/tickets?estado=BOGUS\")",
+      "Bash(curl -s \"http://localhost:8080/api/tickets/SOP-2026-0001\")",
+      "Bash(curl -s -w \"\\\\nHTTP_STATUS:%{http_code}\\\\n\" \"http://localhost:8080/api/tickets/SOP-9999-9999\")",
+      "Bash(curl -s \"http://localhost:8080/api/tickets?areaId=1&page=0&size=2\")",
+      "Bash(curl -s \"http://localhost:8080/api/tickets/SOP-2026-0003\")"
+    ],
+    "additionalDirectories": [
+      "c:\\dev\\mesa-ayuda\\.mvn",
+      "c:\\dev\\mesa-ayuda\\src\\main\\java\\com\\mesaayuda"
+    ]
+  }
+}

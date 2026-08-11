@@ -1,0 +1,35 @@
+### Variables
+@host = http://localhost:8080
+
+### Categorías: listado paginado
+GET {{host}}/api/categorias
+
+### Categorías: página 2 tamaño 3
+GET {{host}}/api/categorias?page=1&size=3
+
+### Tickets: listado paginado sin filtros
+GET {{host}}/api/tickets
+
+### Tickets: filtrado por estado
+GET {{host}}/api/tickets?estado=NUEVO
+
+### Tickets: filtrado por prioridad
+GET {{host}}/api/tickets?prioridad=CRITICA
+
+### Tickets: filtrado por área (1 = Mesa de Ayuda en los datos semilla)
+GET {{host}}/api/tickets?areaId=1
+
+### Tickets: combinando filtros y paginación
+GET {{host}}/api/tickets?estado=EN_PROGRESO&prioridad=CRITICA&page=0&size=5
+
+### Tickets: valor de enum inválido -> 400 con ApiError
+GET {{host}}/api/tickets?estado=BOGUS
+
+### Tickets: detalle por código -> 200
+GET {{host}}/api/tickets/SOP-2026-0001
+
+### Tickets: detalle de un ticket resuelto en llamada -> 200
+GET {{host}}/api/tickets/SOP-2026-0002
+
+### Tickets: código inexistente -> 404 con ApiError
+GET {{host}}/api/tickets/SOP-9999-9999

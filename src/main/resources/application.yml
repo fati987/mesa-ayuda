@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: mesa-ayuda
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mesa_ayuda
+    username: postgres
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
