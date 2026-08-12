@@ -2,6 +2,7 @@ package com.mesaayuda.sla;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,6 +46,14 @@ public class VencimientoService {
         CalendarioLaboral calendario = calendarioActivo();
         Set<LocalDate> feriados = feriados(calendario);
         return calendarioLaboralService.minutosHabilesEntre(desde, hasta, calendario, feriados);
+    }
+
+    /**
+     * Expone la zona horaria del calendario activo para que los servicios
+     * de métricas no dupliquen "buscar el calendario activo".
+     */
+    public ZoneId zonaHorariaActiva() {
+        return calendarioActivo().zoneId();
     }
 
     private CalendarioLaboral calendarioActivo() {

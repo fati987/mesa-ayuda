@@ -376,3 +376,55 @@ Authorization: Bearer {{tokenSupervisor}}
 ### Supervisor sin indicar área -> 409
 GET {{host}}/api/tablero
 Authorization: Bearer {{tokenSupervisor}}
+
+### =======================================================================
+### Métricas (solo SUPERVISOR/ADMIN)
+### =======================================================================
+
+### FCR: proporción resuelto en llamada, por área y por día
+GET {{host}}/api/metricas/fcr?desde=2025-01-01&hasta=2026-12-31
+Authorization: Bearer {{tokenSupervisor}}
+
+### Tasa de derivación por área + rebote
+GET {{host}}/api/metricas/tasa-derivacion?desde=2025-01-01&hasta=2026-12-31
+Authorization: Bearer {{tokenSupervisor}}
+
+### Drill-down paginado de tickets rebotados
+GET {{host}}/api/metricas/tasa-derivacion/rebotes?desde=2025-01-01&hasta=2026-12-31
+Authorization: Bearer {{tokenSupervisor}}
+
+### Tiempo de ciclo (cycle time) y tiempo de entrega (lead time)
+GET {{host}}/api/metricas/tiempo-ciclo?desde=2025-01-01&hasta=2026-12-31
+Authorization: Bearer {{tokenSupervisor}}
+
+### Tiempo de espera previo (derivación -> toma), por área destino
+GET {{host}}/api/metricas/tiempo-espera?desde=2025-01-01&hasta=2026-12-31
+Authorization: Bearer {{tokenSupervisor}}
+
+### Cumplimiento de SLA, por categoría/área/prioridad
+GET {{host}}/api/metricas/cumplimiento-sla?desde=2025-01-01&hasta=2026-12-31
+Authorization: Bearer {{tokenSupervisor}}
+
+### Diagrama de flujo acumulado (rango acotado a <=366 días)
+GET {{host}}/api/metricas/flujo-acumulado?desde=2026-01-01&hasta=2026-12-31
+Authorization: Bearer {{tokenSupervisor}}
+
+### Flujo acumulado con rango > 366 días -> 409
+GET {{host}}/api/metricas/flujo-acumulado?desde=2024-01-01&hasta=2026-12-31
+Authorization: Bearer {{tokenSupervisor}}
+
+### Duración media de llamada + llamadas con más de un ticket
+GET {{host}}/api/metricas/llamadas?desde=2025-01-01&hasta=2026-12-31
+Authorization: Bearer {{tokenSupervisor}}
+
+### Drill-down paginado de llamadas con múltiples tickets
+GET {{host}}/api/metricas/llamadas/multiples-tickets?desde=2025-01-01&hasta=2026-12-31
+Authorization: Bearer {{tokenSupervisor}}
+
+### Un agente NO puede consultar métricas -> 403
+GET {{host}}/api/metricas/fcr?desde=2025-01-01&hasta=2026-12-31
+Authorization: Bearer {{tokenAgente}}
+
+### Rango de fechas invertido -> 409
+GET {{host}}/api/metricas/fcr?desde=2026-12-31&hasta=2025-01-01
+Authorization: Bearer {{tokenSupervisor}}
