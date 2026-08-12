@@ -20,6 +20,7 @@ public record TicketResumenDto(
         String categoriaNombre,
         String contactoNombre,
         boolean resueltoEnLlamada,
+        String usuarioAsignadoNombre,
         Instant creadoEn,
         Instant actualizadoEn) {
 }

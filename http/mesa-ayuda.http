@@ -170,3 +170,209 @@ Authorization: Bearer {{tokenAdmin}}
 ### Agente intenta listar áreas -> 403
 GET {{host}}/api/areas
 Authorization: Bearer {{tokenAgente}}
+
+### =======================================================================
+### Flujo Sprint 3: llamada -> ticket -> transiciones -> historial
+### =======================================================================
+
+### Login agente de Soporte Tecnico (Matias), necesario para el recorrido B
+# @name loginMatias
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "correo": "matias.prieto@mesaayuda.cl",
+  "contrasena": "Demo1234!"
+}
+
+###
+@tokenMatias = {{loginMatias.response.body.$.accessToken}}
+
+### --- Recorrido A: resolución en línea ---------------------------------
+
+### Registrar la llamada (Camila atiende)
+# @name llamadaA
+POST {{host}}/api/llamadas
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+
+{
+  "contactoTelefono": "+56911112222",
+  "contactoNombreCompleto": "Cliente Recorrido A",
+  "duracionSegundos": 240
+}
+
+###
+@llamadaAId = {{llamadaA.response.body.$.id}}
+
+### Levantar el ticket ya marcado como resuelto en la llamada
+# @name ticketA
+POST {{host}}/api/tickets
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+
+{
+  "llamadaId": {{llamadaAId}},
+  "areaId": 1,
+  "categoriaId": 1,
+  "tipo": "INCIDENTE",
+  "prioridad": "MEDIA",
+  "urgencia": "MEDIA",
+  "impacto": "INDIVIDUAL",
+  "titulo": "No enciende el monitor",
+  "descripcion": "Se orientó al cliente para revisar el cable de alimentación.",
+  "resueltoEnLlamada": true
+}
+
+###
+@codigoTicketA = {{ticketA.response.body.$.codigo}}
+
+### Detalle recién creado -> NUEVO, historial con 1 fila
+GET {{host}}/api/tickets/{{codigoTicketA}}
+Authorization: Bearer {{tokenAgente}}
+
+### Resolver (NUEVO -> RESUELTO)
+PATCH {{host}}/api/tickets/{{codigoTicketA}}/resolucion
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+
+{
+  "solucion": "Cable de alimentación mal conectado, se guio al cliente para reconectarlo."
+}
+
+### Detalle -> RESUELTO, historial con 2 filas
+GET {{host}}/api/tickets/{{codigoTicketA}}
+Authorization: Bearer {{tokenAgente}}
+
+### Cerrar (RESUELTO -> CERRADO)
+PATCH {{host}}/api/tickets/{{codigoTicketA}}/cierre
+Authorization: Bearer {{tokenAgente}}
+
+### Detalle final -> CERRADO, historial con 3 filas
+GET {{host}}/api/tickets/{{codigoTicketA}}
+Authorization: Bearer {{tokenAgente}}
+
+### --- Recorrido B: derivación, toma y resolución desde otra área -------
+
+### Registrar la llamada
+# @name llamadaB
+POST {{host}}/api/llamadas
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+
+{
+  "contactoTelefono": "+56933334444",
+  "contactoNombreCompleto": "Cliente Recorrido B",
+  "duracionSegundos": 300
+}
+
+###
+@llamadaBId = {{llamadaB.response.body.$.id}}
+
+### Levantar el ticket, sin resolver en la llamada
+# @name ticketB
+POST {{host}}/api/tickets
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+
+{
+  "llamadaId": {{llamadaBId}},
+  "areaId": 1,
+  "categoriaId": 1,
+  "tipo": "INCIDENTE",
+  "prioridad": "ALTA",
+  "urgencia": "ALTA",
+  "impacto": "AREA",
+  "titulo": "Servidor de archivos caído",
+  "descripcion": "El cliente reporta que no puede acceder a los archivos compartidos.",
+  "resueltoEnLlamada": false
+}
+
+###
+@codigoTicketB = {{ticketB.response.body.$.codigo}}
+
+### Derivar a Soporte Tecnico (NUEVO -> DERIVADO)
+PATCH {{host}}/api/tickets/{{codigoTicketB}}/derivacion
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+
+{
+  "areaDestinoId": 2,
+  "motivo": "Requiere revisión de infraestructura de servidores"
+}
+
+### Confirmar que el área actual cambió
+GET {{host}}/api/tickets/{{codigoTicketB}}
+Authorization: Bearer {{tokenAgente}}
+
+### Matias (Soporte Tecnico) toma el ticket (DERIVADO -> EN_PROGRESO)
+PATCH {{host}}/api/tickets/{{codigoTicketB}}/toma
+Authorization: Bearer {{tokenMatias}}
+
+### Detalle -> EN_PROGRESO, usuarioAsignadoNombre = Matias Prieto
+GET {{host}}/api/tickets/{{codigoTicketB}}
+Authorization: Bearer {{tokenMatias}}
+
+### Matias resuelve (EN_PROGRESO -> RESUELTO)
+PATCH {{host}}/api/tickets/{{codigoTicketB}}/resolucion
+Authorization: Bearer {{tokenMatias}}
+Content-Type: application/json
+
+{
+  "solucion": "Se reinició el servicio de archivos y se validó el acceso."
+}
+
+### Detalle final -> RESUELTO, historial con 4 filas
+GET {{host}}/api/tickets/{{codigoTicketB}}
+Authorization: Bearer {{tokenMatias}}
+
+### --- Errores esperados -------------------------------------------------
+
+### Tomar un ticket A que sigue CERRADO (CERRADO->EN_PROGRESO SÍ es válido,
+### probamos con ticket A ya CERRADO para reabrirlo -> 200, no error)
+PATCH {{host}}/api/tickets/{{codigoTicketA}}/reapertura
+Authorization: Bearer {{tokenAgente}}
+
+### Intentar "tomar" un ticket que ya está EN_PROGRESO -> transición inválida, 409
+PATCH {{host}}/api/tickets/{{codigoTicketA}}/toma
+Authorization: Bearer {{tokenAgente}}
+
+### --- Comentarios ---------------------------------------------------------
+
+### Comentario interno sobre el ticket B
+POST {{host}}/api/tickets/{{codigoTicketB}}/comentarios
+Authorization: Bearer {{tokenMatias}}
+Content-Type: application/json
+
+{
+  "visibilidad": "INTERNO",
+  "contenido": "Revisar también el respaldo automático de esta noche."
+}
+
+### Comentario público sobre el ticket B
+POST {{host}}/api/tickets/{{codigoTicketB}}/comentarios
+Authorization: Bearer {{tokenMatias}}
+Content-Type: application/json
+
+{
+  "visibilidad": "PUBLICO",
+  "contenido": "Servicio restablecido, gracias por su paciencia."
+}
+
+### Listar comentarios del ticket B -> 200, 2 comentarios
+GET {{host}}/api/tickets/{{codigoTicketB}}/comentarios
+Authorization: Bearer {{tokenMatias}}
+
+### --- Tablero --------------------------------------------------------------
+
+### Tablero de Camila (Mesa de Ayuda, área forzada automáticamente)
+GET {{host}}/api/tablero
+Authorization: Bearer {{tokenAgente}}
+
+### Tablero de Soporte Tecnico visto por el supervisor
+GET {{host}}/api/tablero?area=2
+Authorization: Bearer {{tokenSupervisor}}
+
+### Supervisor sin indicar área -> 409
+GET {{host}}/api/tablero
+Authorization: Bearer {{tokenSupervisor}}

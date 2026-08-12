@@ -20,11 +20,30 @@ spring:
     enabled: true
     locations: classpath:db/migration
 
+  mail:
+    host: localhost
+    port: 1025
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
 security:
   jwt:
     secret: ${JWT_SECRET}
     access-token-expiracion-minutos: 15
     refresh-token-expiracion-dias: 7
+
+sla:
+  escalamiento:
+    umbral-minutos: ${SLA_ESCALAMIENTO_UMBRAL_MINUTOS:30}
+    cron: ${SLA_ESCALAMIENTO_CRON:0 */5 * * * *}
+  notificacion:
+    remitente: mesa-ayuda@localhost
 
 server:
   port: 8080

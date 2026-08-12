@@ -1,6 +1,7 @@
 package com.mesaayuda.ticket.dto;
 
 import java.time.Instant;
+import java.util.List;
 
 import com.mesaayuda.contacto.dto.ContactoResumenDto;
 import com.mesaayuda.llamada.dto.LlamadaResumenDto;
@@ -24,11 +25,15 @@ public record TicketDetalleDto(
         String areaActualNombre,
         String categoriaNombre,
         String usuarioCreadorNombre,
+        String usuarioAsignadoNombre,
         boolean resueltoEnLlamada,
         String solucion,
         int minutosPausado,
         ContactoResumenDto contacto,
         LlamadaResumenDto llamada,
+        List<HistorialEstadoDto> historial,
+        Instant fechaVencimiento,
+        boolean escalado,
         Instant creadoEn,
         Instant actualizadoEn) {
 }

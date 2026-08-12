@@ -26,7 +26,9 @@
       "Bash(curl -s \"http://localhost:8080/api/tickets/SOP-2026-0001\")",
       "Bash(curl -s -w \"\\\\nHTTP_STATUS:%{http_code}\\\\n\" \"http://localhost:8080/api/tickets/SOP-9999-9999\")",
       "Bash(curl -s \"http://localhost:8080/api/tickets?areaId=1&page=0&size=2\")",
-      "Bash(curl -s \"http://localhost:8080/api/tickets/SOP-2026-0003\")"
+      "Bash(curl -s \"http://localhost:8080/api/tickets/SOP-2026-0003\")",
+      "Bash(npx --yes maildev)",
+      "Bash(echo \"maildev iniciado en background, PID $!\")"
     ],
     "additionalDirectories": [
       "c:\\dev\\mesa-ayuda\\.mvn",

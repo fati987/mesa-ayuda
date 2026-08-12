@@ -69,6 +69,10 @@ public class Ticket extends Auditable {
     @JoinColumn(name = "usuario_creador_id", nullable = false)
     private Usuario usuarioCreador;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_asignado_id")
+    private Usuario usuarioAsignado;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", nullable = false, length = 20)
     private TipoTicket tipo;
@@ -107,6 +111,12 @@ public class Ticket extends Auditable {
 
     @Column(name = "minutos_pausado", nullable = false)
     private int minutosPausado;
+
+    @Column(name = "fecha_vencimiento")
+    private Instant fechaVencimiento;
+
+    @Column(name = "escalado", nullable = false)
+    private boolean escalado;
 
     @Column(name = "eliminado_en")
     private Instant eliminadoEn;
