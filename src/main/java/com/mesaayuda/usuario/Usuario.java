@@ -49,6 +49,9 @@ public class Usuario extends Auditable {
     @JoinColumn(name = "area_id", nullable = false)
     private Area area;
 
+    @Column(name = "contrasena_hash", nullable = false, length = 100)
+    private String contrasenaHash;
+
     @Column(name = "activo", nullable = false)
     private boolean activo;
 }
