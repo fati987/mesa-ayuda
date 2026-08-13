@@ -1,0 +1,21 @@
+# Override de test: fija un secreto JWT constante (no sensible, nunca usado
+# fuera de tests) para que "./mvnw test" no dependa de la variable de
+# entorno JWT_SECRET. Junto con PostgresTestcontainer (que sobreescribe
+# spring.datasource.* dinámicamente), esto deja "./mvnw test" corriendo con
+# Docker y nada más, sin ninguna variable de entorno que configurar a mano.
+#
+# Nombrado application-test.yml (no application.yml) a propósito: un
+# application.yml sin calificar en el classpath de test REEMPLAZA por
+# completo al de main/resources (Spring Boot resuelve classpath:/application.yml
+# a un único recurso, y el de test precede al de main en el classpath), en
+# vez de fusionarse con él. Con el nombre sin calificar, esto pisaba también
+# spring.profiles.active y con eso el perfil "dev" nunca se activaba en
+# tests, lo que a su vez dejaba sin resolver cors.allowed-origins (que solo
+# tiene default en application-dev.yml) y rompía el arranque del contexto en
+# CI con un BeanCreationException en CorsConfig. Como application-test.yml
+# SÍ es un documento de perfil (igual que application-dev.yml/application-prod.yml),
+# se activa junto con "dev" en PostgresTestcontainer (@ActiveProfiles) y solo
+# agrega este override puntual, sin reemplazar nada del resto de la config.
+security:
+  jwt:
+    secret: "test-secret-solo-para-tests-nunca-usar-en-produccion-1234567890"
