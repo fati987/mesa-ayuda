@@ -2,6 +2,7 @@ package com.mesaayuda.flujo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.JdkClientHttpRequestFactory;
 
 import com.mesaayuda.auth.dto.LoginRequest;
 import com.mesaayuda.auth.dto.LoginResponse;
@@ -30,6 +32,20 @@ class AutenticacionEndpointTest extends PostgresTestcontainer {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @BeforeEach
+    void usarClienteCompatibleCon401TrasPost() {
+        // SimpleClientHttpRequestFactory (default de TestRestTemplate, sobre
+        // HttpURLConnection) lanza HttpRetryException: "cannot retry due to
+        // server authentication, in streaming mode" al recibir un 401 en
+        // respuesta a un POST con body -- limitación conocida del cliente,
+        // no un bug de la app (el login sí devuelve 401 correctamente).
+        // JdkClientHttpRequestFactory (spring-web, sin dependencia nueva,
+        // mismo patrón que ya usan los demás tests de este paquete para
+        // soportar PATCH) envuelve java.net.http.HttpClient, que no tiene
+        // esa limitación.
+        restTemplate.getRestTemplate().setRequestFactory(new JdkClientHttpRequestFactory());
+    }
 
     @Test
     void loginConCredencialesValidasDevuelveTokens() {
