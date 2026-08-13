@@ -214,11 +214,24 @@ soporte nativo para "deploy from Dockerfile"):
    cualquiera de los dos casos, setear `VITE_API_BASE_URL=<URL del backend
    del paso 6>` como variable de **build** (Vite la incrusta en el bundle en
    tiempo de compilación, no en runtime).
+   - Si es un Static Site nativo (no `frontend/Dockerfile`), agregar además
+     una regla de rewrite para el ruteo client-side de React Router: en
+     Settings → Redirects/Rewrites → Add Rule, Source `/*`, Destination
+     `/index.html`, Action **Rewrite** (no Redirect). Sin esto, cualquier
+     ruta que no sea `/` (ej. `/login`, `/tablero`) da 404 al refrescar o
+     entrar directo — el equivalente exacto de `frontend/nginx.conf` para
+     el path con Docker.
 8. Copiar la URL pública que asigna la plataforma al frontend, volver al
    servicio backend, setear `CORS_ALLOWED_ORIGINS=<URL del frontend>` y
    redesplegar.
 
-**URL del despliegue**: _(pendiente — completar tras desplegar)_
+**URL del despliegue**:
+- Frontend: <https://mesa-ayuda-1.onrender.com>
+- Backend (API + WebSocket): <https://mesa-ayuda-ff3h.onrender.com>
+
+Verificado: el frontend sirve todas las rutas correctamente, el login real
+contra la base gestionada devuelve tokens válidos, y CORS está configurado
+para aceptar exactamente el origen del frontend desplegado.
 
 ## Estado de sprints
 
