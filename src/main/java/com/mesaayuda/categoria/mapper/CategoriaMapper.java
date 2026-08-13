@@ -9,6 +9,6 @@ public final class CategoriaMapper {
     }
 
     public static CategoriaDto aDto(Categoria categoria) {
-        return new CategoriaDto(categoria.getNombre(), categoria.getDescripcion(), categoria.isActivo());
+        return new CategoriaDto(categoria.getId(), categoria.getNombre(), categoria.getDescripcion(), categoria.isActivo());
     }
 }

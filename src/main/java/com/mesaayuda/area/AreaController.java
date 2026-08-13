@@ -23,7 +23,6 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/areas")
-@PreAuthorize("hasRole('ADMIN')")
 public class AreaController {
 
     private final AreaService areaService;
@@ -44,17 +43,20 @@ public class AreaController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     public AreaDto crear(@Valid @RequestBody AreaCrearRequest request) {
         return areaService.crear(request);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public AreaDto actualizar(@PathVariable Long id, @Valid @RequestBody AreaActualizarRequest request) {
         return areaService.actualizar(id, request);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
     public void desactivar(@PathVariable Long id) {
         areaService.desactivar(id);
     }

@@ -15,6 +15,8 @@ import com.mesaayuda.auth.UsuarioPrincipal;
 import com.mesaayuda.categoria.Categoria;
 import com.mesaayuda.categoria.CategoriaNoEncontradaException;
 import com.mesaayuda.categoria.CategoriaRepository;
+import com.mesaayuda.derivacion.Derivacion;
+import com.mesaayuda.derivacion.DerivacionRepository;
 import com.mesaayuda.llamada.Llamada;
 import com.mesaayuda.llamada.LlamadaNoEncontradaException;
 import com.mesaayuda.llamada.LlamadaRepository;
@@ -37,6 +39,7 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
     private final HistorialEstadoRepository historialEstadoRepository;
+    private final DerivacionRepository derivacionRepository;
     private final LlamadaRepository llamadaRepository;
     private final AreaRepository areaRepository;
     private final CategoriaRepository categoriaRepository;
@@ -47,12 +50,13 @@ public class TicketService {
     private final TicketCodigoGenerator ticketCodigoGenerator;
 
     public TicketService(TicketRepository ticketRepository, HistorialEstadoRepository historialEstadoRepository,
-            LlamadaRepository llamadaRepository, AreaRepository areaRepository, CategoriaRepository categoriaRepository,
-            UsuarioRepository usuarioRepository, UsuarioActualProvider usuarioActualProvider,
-            AccesoAreaValidator accesoAreaValidator, TransicionService transicionService,
-            TicketCodigoGenerator ticketCodigoGenerator) {
+            DerivacionRepository derivacionRepository, LlamadaRepository llamadaRepository, AreaRepository areaRepository,
+            CategoriaRepository categoriaRepository, UsuarioRepository usuarioRepository,
+            UsuarioActualProvider usuarioActualProvider, AccesoAreaValidator accesoAreaValidator,
+            TransicionService transicionService, TicketCodigoGenerator ticketCodigoGenerator) {
         this.ticketRepository = ticketRepository;
         this.historialEstadoRepository = historialEstadoRepository;
+        this.derivacionRepository = derivacionRepository;
         this.llamadaRepository = llamadaRepository;
         this.areaRepository = areaRepository;
         this.categoriaRepository = categoriaRepository;
@@ -73,7 +77,7 @@ public class TicketService {
         Ticket ticket = ticketRepository.findByCodigoAndEliminadoEnIsNull(codigo)
                 .orElseThrow(() -> new TicketNoEncontradoException(codigo));
         accesoAreaValidator.verificarAcceso(usuarioActualProvider.actual(), ticket.getAreaActual().getId());
-        return aDetalleConHistorial(ticket);
+        return aDetalleCompleto(ticket);
     }
 
     @Transactional
@@ -124,7 +128,7 @@ public class TicketService {
         historialInicial.setComentario("Ticket creado durante la llamada.");
         historialEstadoRepository.save(historialInicial);
 
-        return aDetalleConHistorial(ticket);
+        return aDetalleCompleto(ticket);
     }
 
     @Transactional
@@ -134,14 +138,14 @@ public class TicketService {
                 .orElseThrow(() -> new AreaNoEncontradaException(request.areaDestinoId()));
         transicionService.transicionar(ticket, EstadoTicket.DERIVADO,
                 ContextoTransicion.derivacion(usuarioActualProvider.actual(), areaDestino, request.motivo()));
-        return aDetalleConHistorial(ticket);
+        return aDetalleCompleto(ticket);
     }
 
     @Transactional
     public TicketDetalleDto tomar(String codigo) {
         Ticket ticket = cargarConAcceso(codigo);
         transicionService.transicionar(ticket, EstadoTicket.EN_PROGRESO, ContextoTransicion.simple(usuarioActualProvider.actual()));
-        return aDetalleConHistorial(ticket);
+        return aDetalleCompleto(ticket);
     }
 
     @Transactional
@@ -149,35 +153,35 @@ public class TicketService {
         Ticket ticket = cargarConAcceso(codigo);
         transicionService.transicionar(ticket, EstadoTicket.RESUELTO,
                 ContextoTransicion.resolucion(usuarioActualProvider.actual(), request.solucion()));
-        return aDetalleConHistorial(ticket);
+        return aDetalleCompleto(ticket);
     }
 
     @Transactional
     public TicketDetalleDto pausar(String codigo) {
         Ticket ticket = cargarConAcceso(codigo);
         transicionService.transicionar(ticket, EstadoTicket.ESPERANDO_CLIENTE, ContextoTransicion.simple(usuarioActualProvider.actual()));
-        return aDetalleConHistorial(ticket);
+        return aDetalleCompleto(ticket);
     }
 
     @Transactional
     public TicketDetalleDto reanudar(String codigo) {
         Ticket ticket = cargarConAcceso(codigo);
         transicionService.transicionar(ticket, EstadoTicket.EN_PROGRESO, ContextoTransicion.simple(usuarioActualProvider.actual()));
-        return aDetalleConHistorial(ticket);
+        return aDetalleCompleto(ticket);
     }
 
     @Transactional
     public TicketDetalleDto cerrar(String codigo) {
         Ticket ticket = cargarConAcceso(codigo);
         transicionService.transicionar(ticket, EstadoTicket.CERRADO, ContextoTransicion.simple(usuarioActualProvider.actual()));
-        return aDetalleConHistorial(ticket);
+        return aDetalleCompleto(ticket);
     }
 
     @Transactional
     public TicketDetalleDto reabrir(String codigo) {
         Ticket ticket = cargarConAcceso(codigo);
         transicionService.transicionar(ticket, EstadoTicket.EN_PROGRESO, ContextoTransicion.simple(usuarioActualProvider.actual()));
-        return aDetalleConHistorial(ticket);
+        return aDetalleCompleto(ticket);
     }
 
     private Ticket cargarConAcceso(String codigo) {
@@ -187,8 +191,9 @@ public class TicketService {
         return ticket;
     }
 
-    private TicketDetalleDto aDetalleConHistorial(Ticket ticket) {
+    private TicketDetalleDto aDetalleCompleto(Ticket ticket) {
         List<HistorialEstado> historial = historialEstadoRepository.findByTicketIdOrderByCreadoEnAsc(ticket.getId());
-        return TicketMapper.aDetalle(ticket, historial);
+        List<Derivacion> derivaciones = derivacionRepository.findByTicket_IdOrderByCreadoEnAsc(ticket.getId());
+        return TicketMapper.aDetalle(ticket, historial, derivaciones);
     }
 }

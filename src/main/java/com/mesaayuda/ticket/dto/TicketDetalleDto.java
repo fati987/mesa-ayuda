@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 
 import com.mesaayuda.contacto.dto.ContactoResumenDto;
+import com.mesaayuda.derivacion.dto.DerivacionDto;
 import com.mesaayuda.llamada.dto.LlamadaResumenDto;
 import com.mesaayuda.ticket.enums.EstadoTicket;
 import com.mesaayuda.ticket.enums.Impacto;
@@ -32,6 +33,7 @@ public record TicketDetalleDto(
         ContactoResumenDto contacto,
         LlamadaResumenDto llamada,
         List<HistorialEstadoDto> historial,
+        List<DerivacionDto> derivaciones,
         Instant fechaVencimiento,
         boolean escalado,
         Instant creadoEn,

@@ -70,6 +70,14 @@ Content-Type: application/json
   "refreshToken": "{{tokenAgente}}"
 }
 
+### Perfil del usuario autenticado (Sprint 6, addendum de frontend) -> 200,
+### cualquier rol autenticado, sin @PreAuthorize
+GET {{host}}/api/auth/me
+Authorization: Bearer {{tokenAgente}}
+
+### /me sin token -> 401
+GET {{host}}/api/auth/me
+
 ### =======================================================================
 ### Tickets (protegidos, con autorización por área)
 ### =======================================================================
@@ -78,6 +86,8 @@ Content-Type: application/json
 GET {{host}}/api/tickets
 
 ### Categorías: listado paginado (requiere autenticación desde este sprint)
+### Desde Sprint 6 cada categoría trae su "id" (antes ausente, bloqueaba el
+### formulario de creación de ticket en el frontend)
 GET {{host}}/api/categorias
 Authorization: Bearer {{tokenAgente}}
 
@@ -160,16 +170,29 @@ DELETE {{host}}/api/usuarios/admin@mesaayuda.cl
 Authorization: Bearer {{tokenAdmin}}
 
 ### =======================================================================
-### CRUD de áreas (solo ADMIN)
+### Áreas: lectura abierta a cualquier autenticado, escritura solo ADMIN
+### (Sprint 6, addendum de frontend: un agente necesita listar áreas para
+### poblar los selectores de derivación y del tablero)
 ### =======================================================================
 
 ### Admin lista áreas -> 200, paginado
 GET {{host}}/api/areas
 Authorization: Bearer {{tokenAdmin}}
 
-### Agente intenta listar áreas -> 403
+### Agente también puede listar áreas -> 200 (antes 403, ver Sprint 6)
 GET {{host}}/api/areas
 Authorization: Bearer {{tokenAgente}}
+
+### Agente intenta crear un área -> 403 (mutación sigue siendo solo ADMIN)
+POST {{host}}/api/areas
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+
+{
+  "nombre": "Area de Prueba",
+  "recibeLlamadas": false,
+  "limiteWipAgente": 5
+}
 
 ### =======================================================================
 ### Flujo Sprint 3: llamada -> ticket -> transiciones -> historial
@@ -301,7 +324,9 @@ Content-Type: application/json
   "motivo": "Requiere revisión de infraestructura de servidores"
 }
 
-### Confirmar que el área actual cambió
+### Confirmar que el área actual cambió. Desde Sprint 6 el detalle también
+### trae "derivaciones" (motivo, área origen/destino, quién derivó) — antes
+### el motivo real solo vivía en la tabla derivacion sin endpoint de lectura
 GET {{host}}/api/tickets/{{codigoTicketB}}
 Authorization: Bearer {{tokenAgente}}
 

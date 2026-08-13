@@ -40,6 +40,8 @@ public class SecurityConfig {
             JwtAuthenticationEntryPoint authenticationEntryPoint) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+                .cors(cors -> {
+                })
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/refresh").permitAll()

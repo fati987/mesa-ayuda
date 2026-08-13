@@ -3,6 +3,8 @@ package com.mesaayuda.ticket.mapper;
 import java.util.List;
 
 import com.mesaayuda.contacto.dto.ContactoResumenDto;
+import com.mesaayuda.derivacion.Derivacion;
+import com.mesaayuda.derivacion.mapper.DerivacionMapper;
 import com.mesaayuda.llamada.Llamada;
 import com.mesaayuda.llamada.dto.LlamadaResumenDto;
 import com.mesaayuda.ticket.HistorialEstado;
@@ -40,7 +42,7 @@ public final class TicketMapper {
                 ticket.getActualizadoEn());
     }
 
-    public static TicketDetalleDto aDetalle(Ticket ticket, List<HistorialEstado> historial) {
+    public static TicketDetalleDto aDetalle(Ticket ticket, List<HistorialEstado> historial, List<Derivacion> derivaciones) {
         return new TicketDetalleDto(
                 ticket.getCodigo(),
                 ticket.getTitulo(),
@@ -61,6 +63,7 @@ public final class TicketMapper {
                 aContactoResumen(ticket),
                 aLlamadaResumen(ticket.getLlamada()),
                 historial.stream().map(TicketMapper::aHistorialDto).toList(),
+                derivaciones.stream().map(DerivacionMapper::aDto).toList(),
                 ticket.getFechaVencimiento(),
                 ticket.isEscalado(),
                 ticket.getCreadoEn(),

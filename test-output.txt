@@ -1,0 +1,58 @@
+﻿16:02:04.249 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.mesaayuda.metricas.CumplimientoSlaIntegrationTest]: CumplimientoSlaIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+16:02:04.629 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.mesaayuda.MesaAyudaApplication for test class com.mesaayuda.metricas.CumplimientoSlaIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.4)
+
+2026-08-12T16:02:05.815-04:00  INFO 36040 --- [mesa-ayuda] [           main] c.m.m.CumplimientoSlaIntegrationTest     : Starting CumplimientoSlaIntegrationTest using Java 21.0.12 with PID 36040 (started by mrequenac.srv in C:\dev\mesa-ayuda)
+2026-08-12T16:02:05.819-04:00  INFO 36040 --- [mesa-ayuda] [           main] c.m.m.CumplimientoSlaIntegrationTest     : No active profile set, falling back to 1 default profile: "default"
+2026-08-12T16:02:08.239-04:00  INFO 36040 --- [mesa-ayuda] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-12T16:02:08.831-04:00  INFO 36040 --- [mesa-ayuda] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 560 ms. Found 15 JPA repository interfaces.
+2026-08-12T16:02:14.113-04:00  INFO 36040 --- [mesa-ayuda] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-08-12T16:02:15.607-04:00  INFO 36040 --- [mesa-ayuda] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4cb00fa5
+2026-08-12T16:02:15.615-04:00  INFO 36040 --- [mesa-ayuda] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-08-12T16:02:15.770-04:00  INFO 36040 --- [mesa-ayuda] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5432/mesa_ayuda (PostgreSQL 17.10)
+2026-08-12T16:02:15.810-04:00  WARN 36040 --- [mesa-ayuda] [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: PostgreSQL 17.10 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 16.
+2026-08-12T16:02:16.016-04:00  INFO 36040 --- [mesa-ayuda] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 7 migrations (execution time 00:00.169s)
+2026-08-12T16:02:16.140-04:00  INFO 36040 --- [mesa-ayuda] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 7
+2026-08-12T16:02:16.172-04:00  INFO 36040 --- [mesa-ayuda] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-08-12T16:02:16.940-04:00  INFO 36040 --- [mesa-ayuda] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-12T16:02:17.229-04:00  INFO 36040 --- [mesa-ayuda] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2026-08-12T16:02:17.372-04:00  INFO 36040 --- [mesa-ayuda] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-12T16:02:18.131-04:00  INFO 36040 --- [mesa-ayuda] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-12T16:02:22.636-04:00  INFO 36040 --- [mesa-ayuda] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-12T16:02:22.813-04:00  INFO 36040 --- [mesa-ayuda] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-12T16:02:26.169-04:00  INFO 36040 --- [mesa-ayuda] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-08-12T16:02:31.962-04:00  INFO 36040 --- [mesa-ayuda] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name usuarioDetailsService
+2026-08-12T16:02:33.127-04:00  INFO 36040 --- [mesa-ayuda] [           main] c.m.m.CumplimientoSlaIntegrationTest     : Started CumplimientoSlaIntegrationTest in 28.129 seconds (process running for 31.094)
+.\mvnw.cmd : WARNING: A Java agent has been loaded dynamically 
+(C:\Users\mrequenac.srv\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.19\byte-buddy-agent-1.14.19.jar)
+En línea: 4 Carácter: 1
++ .\mvnw.cmd -q -o test 2>&1 | Select-Object -Last 200 | Out-File -Enco ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (WARNING: A Java...nt-1.14.19.jar):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has 
+been appended
+2026-08-12T16:02:34.928-04:00  INFO 36040 --- [mesa-ayuda] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.mesaayuda.metricas.FcrIntegrationTest]: FcrIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-12T16:02:34.932-04:00  INFO 36040 --- [mesa-ayuda] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.mesaayuda.MesaAyudaApplication for test class com.mesaayuda.metricas.FcrIntegrationTest
+2026-08-12T16:02:35.058-04:00  INFO 36040 --- [mesa-ayuda] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.mesaayuda.metricas.FlujoAcumuladoIntegrationTest]: FlujoAcumuladoIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-12T16:02:35.062-04:00  INFO 36040 --- [mesa-ayuda] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.mesaayuda.MesaAyudaApplication for test class com.mesaayuda.metricas.FlujoAcumuladoIntegrationTest
+2026-08-12T16:02:35.143-04:00  INFO 36040 --- [mesa-ayuda] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.mesaayuda.metricas.LlamadaMetricasIntegrationTest]: LlamadaMetricasIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-12T16:02:35.148-04:00  INFO 36040 --- [mesa-ayuda] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.mesaayuda.MesaAyudaApplication for test class com.mesaayuda.metricas.LlamadaMetricasIntegrationTest
+2026-08-12T16:02:35.357-04:00  INFO 36040 --- [mesa-ayuda] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.mesaayuda.metricas.TasaDerivacionIntegrationTest]: TasaDerivacionIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-12T16:02:35.363-04:00  INFO 36040 --- [mesa-ayuda] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.mesaayuda.MesaAyudaApplication for test class com.mesaayuda.metricas.TasaDerivacionIntegrationTest
+2026-08-12T16:02:35.525-04:00  INFO 36040 --- [mesa-ayuda] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.mesaayuda.metricas.TiempoCicloIntegrationTest]: TiempoCicloIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-12T16:02:35.529-04:00  INFO 36040 --- [mesa-ayuda] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.mesaayuda.MesaAyudaApplication for test class com.mesaayuda.metricas.TiempoCicloIntegrationTest
+2026-08-12T16:02:35.680-04:00  INFO 36040 --- [mesa-ayuda] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.mesaayuda.metricas.TiempoEsperaIntegrationTest]: TiempoEsperaIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-12T16:02:35.687-04:00  INFO 36040 --- [mesa-ayuda] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.mesaayuda.MesaAyudaApplication for test class com.mesaayuda.metricas.TiempoEsperaIntegrationTest
