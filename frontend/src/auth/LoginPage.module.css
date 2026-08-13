@@ -1,20 +1,20 @@
 .contenedor {
   min-height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(360px, 440px) 1fr;
+}
+
+.columnaFormulario {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-fondo-pagina);
-  padding: 24px;
+  background: var(--color-superficie);
+  padding: var(--espacio-6);
 }
 
 .formulario {
   width: 100%;
   max-width: 380px;
-  background: var(--color-superficie);
-  border: 1px solid var(--color-borde);
-  border-radius: 12px;
-  padding: 32px;
-  box-shadow: var(--sombra-tarjeta);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -22,18 +22,18 @@
 
 .formulario h1 {
   margin: 0 0 4px;
-  font-size: 24px;
+  font-size: var(--texto-xl);
 }
 
 .subtitulo {
   margin: 0 0 20px;
   color: var(--color-texto-secundario);
-  font-size: 14px;
+  font-size: var(--texto-base);
 }
 
 .formulario label {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-semibold);
   margin-top: 12px;
   margin-bottom: 4px;
   color: var(--color-texto-secundario);
@@ -41,7 +41,7 @@
 
 .errorCampo {
   color: var(--color-critico);
-  font-size: 13px;
+  font-size: var(--texto-sm);
   margin-top: 4px;
 }
 
@@ -51,9 +51,48 @@
   background: var(--color-critico-fondo);
   color: var(--color-critico);
   border-radius: 8px;
-  font-size: 13px;
+  font-size: var(--texto-sm);
 }
 
 .formulario button[type='submit'] {
   margin-top: 24px;
+}
+
+.panelIdentidad {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--espacio-3);
+  background: var(--color-acento);
+  color: #ffffff;
+  padding: var(--espacio-8);
+}
+
+.panelIdentidad h2 {
+  margin: 0;
+  font-size: var(--texto-2xl);
+  font-weight: var(--peso-semibold);
+  letter-spacing: -0.01em;
+}
+
+.panelIdentidad p {
+  margin: 0;
+  max-width: 32ch;
+  font-size: var(--texto-md);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+@media (max-width: 860px) {
+  .contenedor {
+    grid-template-columns: 1fr;
+  }
+
+  .panelIdentidad {
+    display: none;
+  }
+
+  .columnaFormulario {
+    padding: var(--espacio-5);
+  }
 }

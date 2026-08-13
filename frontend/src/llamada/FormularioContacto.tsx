@@ -34,14 +34,14 @@ export function FormularioContacto({ onCreada }: FormularioContactoProps) {
       });
       onCreada(llamada);
     } catch {
-      setErrorEnvio('No se pudo registrar la llamada. Revisá los datos e intentá de nuevo.');
+      setErrorEnvio('No se pudo registrar la llamada. Revisa los datos e intenta de nuevo.');
     }
   };
 
   return (
     <form className="tarjeta" onSubmit={handleSubmit(onSubmit)} noValidate>
       <h2>1. Contacto y llamada</h2>
-      <p className="texto-secundario">Registrá al contacto que llama y los datos de la llamada en curso.</p>
+      <p className="texto-secundario">Registra al contacto que llama y los datos de la llamada en curso.</p>
 
       <div className="fila-campos">
         <div className="campo">

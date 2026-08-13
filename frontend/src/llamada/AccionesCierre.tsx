@@ -95,7 +95,7 @@ export function AccionesCierre({ ticket, areaActualId, onFinalizado }: AccionesC
           <div className="campo">
             <label htmlFor="areaDestinoId">Área destino</label>
             <select id="areaDestinoId" {...register('areaDestinoId', { required: true })}>
-              <option value="">Seleccioná un área…</option>
+              <option value="">Selecciona un área…</option>
               {areasDestino.map((area) => (
                 <option key={area.id} value={area.id}>
                   {area.nombre}

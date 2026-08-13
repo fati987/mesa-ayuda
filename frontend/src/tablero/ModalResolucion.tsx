@@ -27,7 +27,7 @@ export function ModalResolucion({
             id="solucion-modal"
             value={solucion}
             onChange={(e) => setSolucion(e.target.value)}
-            placeholder="Describí cómo se resolvió el ticket"
+            placeholder="Describe cómo se resolvió el ticket"
             autoFocus
           />
         </div>

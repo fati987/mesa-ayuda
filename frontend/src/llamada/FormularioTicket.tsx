@@ -74,20 +74,20 @@ export function FormularioTicket({ llamadaId, onCreado }: FormularioTicketProps)
       });
       onCreado(ticket, Number(values.areaId));
     } catch {
-      setErrorEnvio('No se pudo crear el ticket. Revisá los datos e intentá de nuevo.');
+      setErrorEnvio('No se pudo crear el ticket. Revisa los datos e intenta de nuevo.');
     }
   };
 
   return (
     <form className="tarjeta" onSubmit={handleSubmit(onSubmit)} noValidate>
       <h2>2. Ticket</h2>
-      <p className="texto-secundario">Registrá el motivo de la llamada como ticket.</p>
+      <p className="texto-secundario">Registra el motivo de la llamada como ticket.</p>
 
       <div className="fila-campos">
         <div className="campo">
           <label htmlFor="areaId">Área</label>
           <select id="areaId" disabled={cargandoAreas} {...register('areaId', { required: true })}>
-            <option value="">Seleccioná un área…</option>
+            <option value="">Selecciona un área…</option>
             {areasQueReciben.map((area) => (
               <option key={area.id} value={area.id}>
                 {area.nombre}
@@ -100,7 +100,7 @@ export function FormularioTicket({ llamadaId, onCreado }: FormularioTicketProps)
         <div className="campo">
           <label htmlFor="categoriaId">Categoría</label>
           <select id="categoriaId" disabled={cargandoCategorias} {...register('categoriaId', { required: true })}>
-            <option value="">Seleccioná una categoría…</option>
+            <option value="">Selecciona una categoría…</option>
             {(paginaCategorias?.content ?? []).map((categoria) => (
               <option key={categoria.id} value={categoria.id}>
                 {categoria.nombre}
@@ -179,7 +179,7 @@ export function FormularioTicket({ llamadaId, onCreado }: FormularioTicketProps)
       {resueltoEnLlamada && (
         <div className="campo">
           <label htmlFor="solucion">Solución</label>
-          <textarea id="solucion" {...register('solucion')} placeholder="Describí cómo se resolvió" />
+          <textarea id="solucion" {...register('solucion')} placeholder="Describe cómo se resolvió" />
         </div>
       )}
 

@@ -194,7 +194,7 @@ export function TableroPage() {
               value={areaSeleccionada ?? ''}
               onChange={(e) => setAreaSeleccionada(e.target.value ? Number(e.target.value) : null)}
             >
-              <option value="">Seleccioná un área…</option>
+              <option value="">Selecciona un área…</option>
               {paginaAreas?.content.map((area) => (
                 <option key={area.id} value={area.id}>
                   {area.nombre}
@@ -205,7 +205,7 @@ export function TableroPage() {
         )}
       </div>
 
-      {!esAgente && areaSeleccionada === null && <p className="texto-muted">Elegí un área para ver su tablero.</p>}
+      {!esAgente && areaSeleccionada === null && <p className="texto-muted">Elige un área para ver su tablero.</p>}
       {isLoading && (esAgente || areaSeleccionada !== null) && <div className="pagina-cargando">Cargando…</div>}
 
       {tablero && (

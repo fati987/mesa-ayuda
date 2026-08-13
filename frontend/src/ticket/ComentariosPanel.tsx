@@ -74,7 +74,7 @@ export function ComentariosPanel({ codigo }: { codigo: string }) {
             id="contenido-comentario"
             value={contenido}
             onChange={(e) => setContenido(e.target.value)}
-            placeholder="Escribí un comentario…"
+            placeholder="Escribe un comentario…"
           />
         </div>
         <div className="fila-campos" style={{ alignItems: 'end' }}>

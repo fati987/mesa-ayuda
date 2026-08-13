@@ -34,44 +34,50 @@ export function LoginPage() {
       navigate(destino, { replace: true });
     } catch (err) {
       const axiosError = err as AxiosError<ApiError>;
-      setErrorLogin(axiosError.response?.data?.mensaje ?? 'No se pudo iniciar sesión. Verificá tus credenciales.');
+      setErrorLogin(axiosError.response?.data?.mensaje ?? 'No se pudo iniciar sesión. Verifica tus credenciales.');
     }
   };
 
   return (
     <div className={styles.contenedor}>
-      <form className={styles.formulario} onSubmit={handleSubmit(onSubmit)} noValidate>
-        <h1>Mesa de ayuda</h1>
-        <p className={styles.subtitulo}>Soporte telefónico — ingresá con tu cuenta de personal interno</p>
+      <div className={styles.columnaFormulario}>
+        <form className={styles.formulario} onSubmit={handleSubmit(onSubmit)} noValidate>
+          <h1>Mesa de ayuda</h1>
+          <p className={styles.subtitulo}>Soporte telefónico — ingresa con tu cuenta de personal interno</p>
 
-        <label htmlFor="correo">Correo</label>
-        <input
-          id="correo"
-          type="email"
-          autoComplete="username"
-          {...register('correo', { required: 'El correo es obligatorio' })}
-        />
-        {errors.correo && <span className={styles.errorCampo}>{errors.correo.message}</span>}
+          <label htmlFor="correo">Correo</label>
+          <input
+            id="correo"
+            type="email"
+            autoComplete="username"
+            {...register('correo', { required: 'El correo es obligatorio' })}
+          />
+          {errors.correo && <span className={styles.errorCampo}>{errors.correo.message}</span>}
 
-        <label htmlFor="contrasena">Contraseña</label>
-        <input
-          id="contrasena"
-          type="password"
-          autoComplete="current-password"
-          {...register('contrasena', { required: 'La contraseña es obligatoria' })}
-        />
-        {errors.contrasena && <span className={styles.errorCampo}>{errors.contrasena.message}</span>}
+          <label htmlFor="contrasena">Contraseña</label>
+          <input
+            id="contrasena"
+            type="password"
+            autoComplete="current-password"
+            {...register('contrasena', { required: 'La contraseña es obligatoria' })}
+          />
+          {errors.contrasena && <span className={styles.errorCampo}>{errors.contrasena.message}</span>}
 
-        {errorLogin && (
-          <div className={styles.errorGeneral} role="alert">
-            {errorLogin}
-          </div>
-        )}
+          {errorLogin && (
+            <div className={styles.errorGeneral} role="alert">
+              {errorLogin}
+            </div>
+          )}
 
-        <button type="submit" className="boton boton-primario" disabled={isSubmitting}>
-          {isSubmitting ? 'Ingresando…' : 'Ingresar'}
-        </button>
-      </form>
+          <button type="submit" className="boton boton-primario" disabled={isSubmitting}>
+            {isSubmitting ? 'Ingresando…' : 'Ingresar'}
+          </button>
+        </form>
+      </div>
+      <aside className={styles.panelIdentidad}>
+        <h2>Mesa de ayuda</h2>
+        <p>Gestión de tickets de soporte telefónico, de la llamada a la resolución.</p>
+      </aside>
     </div>
   );
 }

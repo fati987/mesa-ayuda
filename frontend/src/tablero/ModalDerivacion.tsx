@@ -38,7 +38,7 @@ export function ModalDerivacion({
             onChange={(e) => setAreaDestinoId(e.target.value)}
             disabled={isLoading}
           >
-            <option value="">Seleccioná un área…</option>
+            <option value="">Selecciona un área…</option>
             {areasDestino.map((area) => (
               <option key={area.id} value={area.id}>
                 {area.nombre}
