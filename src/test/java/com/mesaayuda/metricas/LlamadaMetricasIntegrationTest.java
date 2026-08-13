@@ -15,9 +15,10 @@ import org.springframework.data.domain.PageRequest;
 import com.mesaayuda.metricas.dto.LlamadaMetricasResumenDto;
 import com.mesaayuda.metricas.dto.LlamadaMultiTicketDto;
 import com.mesaayuda.shared.paginacion.PaginaResponse;
+import com.mesaayuda.testsoporte.PostgresTestcontainer;
 
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
-class LlamadaMetricasIntegrationTest {
+class LlamadaMetricasIntegrationTest extends PostgresTestcontainer {
 
     @Autowired
     private LlamadaMetricasService llamadaMetricasService;

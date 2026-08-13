@@ -45,6 +45,12 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/refresh").permitAll()
+                        // El handshake HTTP de /ws no puede llevar el JWT (el
+                        // navegador no manda headers custom en el upgrade
+                        // WebSocket) — la autenticación real ocurre en el
+                        // frame STOMP CONNECT vía StompAuthChannelInterceptor.
+                        // Sin un CONNECT válido no hay suscripción posible.
+                        .requestMatchers("/ws/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

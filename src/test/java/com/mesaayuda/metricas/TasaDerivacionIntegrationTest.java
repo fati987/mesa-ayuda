@@ -16,9 +16,10 @@ import com.mesaayuda.metricas.dto.TasaDerivacionPorAreaDto;
 import com.mesaayuda.metricas.dto.TasaDerivacionResumenDto;
 import com.mesaayuda.metricas.dto.TicketRebotadoDto;
 import com.mesaayuda.shared.paginacion.PaginaResponse;
+import com.mesaayuda.testsoporte.PostgresTestcontainer;
 
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
-class TasaDerivacionIntegrationTest {
+class TasaDerivacionIntegrationTest extends PostgresTestcontainer {
 
     @Autowired
     private TasaDerivacionService tasaDerivacionService;

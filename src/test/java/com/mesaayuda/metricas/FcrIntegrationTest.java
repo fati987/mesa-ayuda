@@ -14,9 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import com.mesaayuda.metricas.dto.FcrPorAreaDto;
 import com.mesaayuda.metricas.dto.FcrPorDiaDto;
 import com.mesaayuda.metricas.dto.FcrResumenDto;
+import com.mesaayuda.testsoporte.PostgresTestcontainer;
 
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
-class FcrIntegrationTest {
+class FcrIntegrationTest extends PostgresTestcontainer {
 
     @Autowired
     private FcrService fcrService;

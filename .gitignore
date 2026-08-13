@@ -5,6 +5,8 @@ app.log
 *.class
 *.log
 
+.env
+
 .idea/
 *.iml
 *.ipr

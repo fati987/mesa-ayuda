@@ -3,7 +3,10 @@ package com.mesaayuda.ticket;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,21 +41,29 @@ import com.mesaayuda.usuario.UsuarioRepository;
 @Service
 public class TransicionService {
 
+    // Las 4 columnas que existen físicamente en el tablero (TableroService).
+    // NUEVO y CERRADO nunca tienen columna: los tickets resueltos en la
+    // misma llamada no ingresan a ningún tablero (regla invariable #10).
+    private static final Set<EstadoTicket> ESTADOS_VISIBLES_EN_TABLERO = Set.of(
+            EstadoTicket.DERIVADO, EstadoTicket.EN_PROGRESO, EstadoTicket.ESPERANDO_CLIENTE, EstadoTicket.RESUELTO);
+
     private final HistorialEstadoRepository historialEstadoRepository;
     private final AsignacionService asignacionService;
     private final DerivacionService derivacionService;
     private final UsuarioRepository usuarioRepository;
     private final VencimientoService vencimientoService;
+    private final ApplicationEventPublisher eventPublisher;
     private final Clock clock;
 
     public TransicionService(HistorialEstadoRepository historialEstadoRepository, AsignacionService asignacionService,
             DerivacionService derivacionService, UsuarioRepository usuarioRepository, VencimientoService vencimientoService,
-            Clock clock) {
+            ApplicationEventPublisher eventPublisher, Clock clock) {
         this.historialEstadoRepository = historialEstadoRepository;
         this.asignacionService = asignacionService;
         this.derivacionService = derivacionService;
         this.usuarioRepository = usuarioRepository;
         this.vencimientoService = vencimientoService;
+        this.eventPublisher = eventPublisher;
         this.clock = clock;
     }
 
@@ -64,6 +75,7 @@ public class TransicionService {
         }
 
         Usuario ejecutor = usuarioRepository.getReferenceById(contexto.ejecutor().getId());
+        Area areaAntes = ticket.getAreaActual();
 
         switch (origen) {
             case NUEVO -> {
@@ -98,7 +110,31 @@ public class TransicionService {
 
         ticket.setEstado(destino);
         historialEstadoRepository.save(construirHistorial(ticket, origen, destino, ejecutor, contexto));
+        publicarEventoTablero(ticket, origen, destino, areaAntes, ticket.getAreaActual());
         return ticket;
+    }
+
+    /**
+     * Notifica a las áreas cuyo tablero cambió, para que el frontend
+     * refetcheé en vivo. NUEVO->RESUELTO nunca notifica (regla invariable
+     * #10: un ticket resuelto en la misma llamada nunca estuvo ni va a
+     * estar en ningún tablero). Para el resto, se notifica el área de
+     * origen si esa columna era visible (el ticket desaparece de ahí) y el
+     * área de destino si la nueva columna es visible (el ticket aparece
+     * ahí) — deduplicando cuando ambas son la misma área.
+     */
+    private void publicarEventoTablero(Ticket ticket, EstadoTicket origen, EstadoTicket destino, Area areaAntes, Area areaDespues) {
+        if (origen == EstadoTicket.NUEVO && destino == EstadoTicket.RESUELTO) {
+            return;
+        }
+        Set<Long> areasANotificar = new LinkedHashSet<>();
+        if (ESTADOS_VISIBLES_EN_TABLERO.contains(origen)) {
+            areasANotificar.add(areaAntes.getId());
+        }
+        if (ESTADOS_VISIBLES_EN_TABLERO.contains(destino)) {
+            areasANotificar.add(areaDespues.getId());
+        }
+        areasANotificar.forEach(areaId -> eventPublisher.publishEvent(new TableroActualizadoEvento(ticket.getCodigo(), areaId)));
     }
 
     private void aplicarResolucionEnLlamada(Ticket ticket) {

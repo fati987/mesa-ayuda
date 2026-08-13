@@ -13,9 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import com.mesaayuda.metricas.dto.TiempoEsperaPorAreaDto;
 import com.mesaayuda.metricas.dto.TiempoEsperaResumenDto;
+import com.mesaayuda.testsoporte.PostgresTestcontainer;
 
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
-class TiempoEsperaIntegrationTest {
+class TiempoEsperaIntegrationTest extends PostgresTestcontainer {
 
     @Autowired
     private TiempoEsperaService tiempoEsperaService;

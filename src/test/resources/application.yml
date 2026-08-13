@@ -1,0 +1,8 @@
+# Override de test: fija un secreto JWT constante (no sensible, nunca usado
+# fuera de tests) para que "./mvnw test" no dependa de la variable de
+# entorno JWT_SECRET. Junto con PostgresTestcontainer (que sobreescribe
+# spring.datasource.* dinámicamente), esto deja "./mvnw test" corriendo con
+# Docker y nada más, sin ninguna variable de entorno que configurar a mano.
+security:
+  jwt:
+    secret: "test-secret-solo-para-tests-nunca-usar-en-produccion-1234567890"

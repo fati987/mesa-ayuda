@@ -12,9 +12,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import com.mesaayuda.metricas.dto.TiempoCicloResumenDto;
+import com.mesaayuda.testsoporte.PostgresTestcontainer;
 
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
-class TiempoCicloIntegrationTest {
+class TiempoCicloIntegrationTest extends PostgresTestcontainer {
 
     @Autowired
     private TiempoCicloService tiempoCicloService;

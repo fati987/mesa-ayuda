@@ -1,0 +1,22 @@
+spring:
+  mail:
+    host: localhost
+    port: 1025
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+  jpa:
+    show-sql: true
+
+logging:
+  level:
+    com.mesaayuda: DEBUG
+
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}

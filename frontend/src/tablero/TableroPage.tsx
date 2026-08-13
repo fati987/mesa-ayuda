@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../auth/AuthContext';
 import { useAreas } from '../area/areaApi';
 import { obtenerTablero, obtenerTicketsColumna } from './tableroApi';
+import { useTableroSocket } from './useTableroSocket';
 import { ColumnaTablero } from './ColumnaTablero';
 import { ModalResolucion } from './ModalResolucion';
 import { ModalDerivacion } from './ModalDerivacion';
@@ -77,6 +78,11 @@ export function TableroPage() {
     queryFn: () => obtenerTablero(esAgente ? undefined : areaSeleccionada ?? undefined),
     enabled: esAgente || areaSeleccionada !== null,
   });
+
+  // Se engancha a tablero?.areaId (no a areaSeleccionada) para cubrir con el
+  // mismo código tanto al AGENTE (que no manda area explícito, el backend
+  // resuelve la suya) como a SUPERVISOR/ADMIN.
+  useTableroSocket(tablero?.areaId ?? null, queryKey);
 
   const areaActual = paginaAreas?.content.find((a) => a.id === tablero?.areaId);
 

@@ -25,6 +25,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import com.mesaayuda.area.Area;
 import com.mesaayuda.auth.UsuarioPrincipal;
@@ -52,6 +53,8 @@ class TransicionServiceTest {
     @Mock
     private VencimientoService vencimientoService;
     @Mock
+    private ApplicationEventPublisher eventPublisher;
+    @Mock
     private Clock clock;
 
     private TransicionService transicionService;
@@ -62,7 +65,7 @@ class TransicionServiceTest {
     @BeforeEach
     void configurar() {
         transicionService = new TransicionService(historialEstadoRepository, asignacionService, derivacionService, usuarioRepository,
-                vencimientoService, clock);
+                vencimientoService, eventPublisher, clock);
         areaA = area(1L, "Area A", true, 3);
         areaB = area(2L, "Area B", false, 3);
         ejecutorPrincipal = new UsuarioPrincipal(EJECUTOR_ID, "ejecutor@mesaayuda.cl", "Ejecutor", Rol.AGENTE, areaA.getId(), true);

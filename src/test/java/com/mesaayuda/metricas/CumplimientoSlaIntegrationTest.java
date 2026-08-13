@@ -14,9 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import com.mesaayuda.metricas.dto.CumplimientoPorDimensionDto;
 import com.mesaayuda.metricas.dto.CumplimientoSlaDto;
+import com.mesaayuda.testsoporte.PostgresTestcontainer;
 
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
-class CumplimientoSlaIntegrationTest {
+class CumplimientoSlaIntegrationTest extends PostgresTestcontainer {
 
     @Autowired
     private CumplimientoSlaService cumplimientoSlaService;

@@ -15,9 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import com.mesaayuda.metricas.dto.FlujoAcumuladoDto;
 import com.mesaayuda.metricas.dto.FlujoAcumuladoPuntoDto;
+import com.mesaayuda.testsoporte.PostgresTestcontainer;
 
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
-class FlujoAcumuladoIntegrationTest {
+class FlujoAcumuladoIntegrationTest extends PostgresTestcontainer {
 
     @Autowired
     private FlujoAcumuladoService flujoAcumuladoService;
